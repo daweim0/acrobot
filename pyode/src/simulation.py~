@@ -1,0 +1,504 @@
+import math
+import Queue
+import threading
+import numpy
+import pygame
+import pygame.locals  # @UnusedWildImport
+import ode
+import input_box
+import lookup_table_hopper
+import lookup_table_generator
+
+
+def convert_coord(x, y):
+    """Convert world coordinates to pixel coordinates."""
+    return int(500 + 170 * x), int(500 - 170 * y)
+
+
+scr_write_head = 5
+font_object = None
+
+# Calculate joint positions
+l1 = .5
+l2 = .75
+lower_mass = 1
+upper_mass = 1
+
+
+def reset_screen_print():
+    global scr_write_head
+    scr_write_head = 5
+
+
+# prints values to the screen instead of terminal
+def screen_print(string):
+    global scr_write_head
+    screen.blit(font_object.render(string, 1, (0, 0, 0)), (10, scr_write_head))
+    scr_write_head += 23
+
+
+def do_slopes():
+    pass
+
+
+class Cord(object):
+    def __init__(self, x, y):
+        self._x = x
+        self._y = y
+
+    def x(self):
+        return self._x
+
+    def y(self):
+        return self._y
+
+    def get(self):
+        return self._x, self._y
+
+
+def clamp(n, min_n, max_n):
+    return max(min(max_n, n), min_n)
+
+
+def get_command(queue):
+    if not queue.empty():
+        return queue.get_nowait()
+    else:
+        return ""
+
+
+class TermThread(threading.Thread):
+    def __init__(self, queue, thread_id=1, name="terminal", counter=1):
+        threading.Thread.__init__(self)
+        self.threadID = thread_id
+        self.name = name
+        self.counter = counter
+        self.queue = queue
+
+    def run(self):
+        while True:
+            self.queue.put(raw_input(">"))
+
+
+# Returns a list containing the passed string divided at the delimiter.
+# The delimiter will not be kept in the returned string.
+def parse(string, delimiter):
+    result = list()
+    input_chars = list(string)
+    section_number = 0
+    for n in range(0, len(input_chars)):
+        if input_chars[n] == delimiter:
+            section_number += 1
+        else:
+            if len(result) <= section_number:
+                result.append(input_chars[n])
+            else:
+                result[section_number] += input_chars[n]
+    return result
+
+
+# TODO: add angular momentum of entire acrobot to screen print
+# TODO: add energy to distance function
+# simulation starts here
+def run(
+        starting_q1=0 * math.pi / 2,
+        starting_q2=0,
+        starting_q1v=0,
+        starting_q2v=0,
+        q1_friction=None,
+        q2_friction=None,
+        headless=False,
+        terminal=False,
+<<<<<<< HEAD
+        fps=12 * 6,
+=======
+        fps=30,
+>>>>>>> 7fe06ad35470974729c0ab481a23ccad0d260f59
+        maximum_seconds=99999,
+        passive=True,
+        constant_torque=0,
+        return_state_vector=True,
+        has_bounds=False,  # Can the elbow turn in a full circle or just 150 degrees in each direction?
+        target_state=(90 * math.pi / 180, 180 * math.pi / 180, 0, 0),
+        gravity=-9.81):
+    gravity_tuple = [0, gravity, 0]
+    # set up terminal in it's own thread (workaround to get non-blocking IO)
+    term_input = Queue.Queue()
+    if terminal:
+        term = TermThread(term_input)
+        term.setDaemon(True)
+        term.start()
+
+    if not passive and fps is None:  # make fps same as in lookup table
+        fps = lookup_table_hopper.get_fps()
+
+    if q1_friction is None:
+        q1_friction = lookup_table_hopper.get_q1_friction()
+
+    if q2_friction is None:
+        q2_friction = lookup_table_hopper.get_q2_friction()
+
+    starting_y1 = math.sin(float(starting_q1)) * l1
+    starting_x1 = math.cos(float(starting_q1)) * l1
+    starting_x2 = starting_x1 + math.cos((float(starting_q1) + float(starting_q2))) * l2
+    starting_y2 = starting_y1 + math.sin((float(starting_q1) + float(starting_q2))) * l2
+
+    origin = Cord(0, 0)
+    lower = Cord(origin.x() + starting_x1, origin.y() + starting_y1)
+    upper = Cord(origin.x() + starting_x2, origin.y() + starting_y2)
+
+    # queue to print window output to (some declarations use it, so it must be set up early)
+    print_queue = Queue.Queue()
+
+    # Initialize pygame
+    if not headless:
+        pygame.init()
+        global screen
+        screen = pygame.display.set_mode((960, 800))
+
+    # Create a world object
+    world = ode.World()
+    world.setGravity(gravity_tuple)
+    world.setERP(.8)  # error correction, .8 is the maximum recommended value
+    world.setCFM(0)  # makes joints slightly springy, helps in setting initial velocities
+
+    # Create two bodies
+    body1 = ode.Body(world)
+    m1 = ode.Mass()
+    m1.setSphere(lower_mass, 0.001)
+    body1.setMass(m1)
+    body1.setPosition((lower.x(), lower.y(), 0))
+
+    body2 = ode.Body(world)
+    m2 = ode.Mass()
+    m2.setSphere(upper_mass, 0.001)
+    body2.setMass(m2)
+    body2.setPosition((upper.x(), upper.y(), 0))
+
+    # Connect body1 with the static environment
+    j1 = ode.HingeJoint(world)
+    j1.attach(body1, ode.environment)
+    j1.setAnchor((origin.x(), origin.y(), 0))
+    j1.setAxis((0, 0, 1))
+
+    # Connect body2 with body1
+    j2 = ode.HingeJoint(world)
+    j2.attach(body1, body2)
+    j2.setAnchor((lower.x(), lower.y(), 0))
+    j2.setAxis((0, 0, 1))
+
+    # Simulation loop setup
+    dt = 1.0 / fps
+    loop_flag = True
+    clk = pygame.time.Clock()
+
+    ticks = 0
+
+    # user input console code
+    paused = True
+    stepping = True
+
+    # screen printing
+    if not headless:
+        global font_object
+        font_object = pygame.font.Font(None, 23)
+
+        # in-window graphing stuff
+        position_queue = list()
+        vel_queue = list()
+        balance_curve_list = list()
+        with open("balance_curve.csv") as curve:
+            while True:
+                line = curve.readline()
+                if line == "":
+                    break
+                balance_curve_list.insert(0, (float(parse(line, ",")[0]), float(parse(line, ",")[1])))
+
+    q1 = 0
+    q2 = 0
+    q1_velocity = 0
+    q2_velocity = 0
+
+    # set angular velocities (since ODE has issues...)
+    torque_dt = 0.0001
+    accuracy = 0.00005
+    for step_num in range(0, 15):
+        q2 = -1 * (j2.getAngle() + -1 * float(starting_q2))
+        q1 = j1.getAngle() + float(starting_q1)
+        q1_vel = body1.getLinearVel()
+        q2_vel = body2.getLinearVel()
+
+        w1 = starting_q1v
+        w2 = starting_q2v
+
+        v1 = w1 * l1
+        v2 = w2 * l2
+
+        v1x = math.sin(q1) * v1
+        v1y = math.cos(q1) * v1
+
+        p1 = numpy.array((math.cos(q1) * l1, math.sin(q1) * l1))
+        p2_rel = numpy.array((math.cos(q1 + q2) * l2, math.sin(q1 + q2) * l2))
+        p2 = p1 + p2_rel
+        d = math.sqrt(p2[0] ** 2 + p2[1] ** 2)
+        theta_d = math.acos(p2[0] / d)
+        if p2[1] < 0:
+            theta_d = math.pi * 2 - theta_d
+
+        v2x = v2 * math.sin(q1 + q2) + d * w1 * math.sin(theta_d)
+        v2y = v2 * math.cos(q1 + q2) + d * w1 * math.cos(theta_d)
+        current_vel1 = body1.getLinearVel()
+        body1.setLinearVel((-1 * v1x * 2 - current_vel1[0], v1y * 2 - current_vel1[1], 0))
+
+        current_vel2 = body2.getLinearVel()
+        body2.setLinearVel((-1 * v2x * 2 - current_vel2[0], v2y * 2 - current_vel2[1], 0))
+
+        # For debugging
+        # q1_diff = math.atan(v1x/v1y) - q1
+        # q2_diff = math.atan((v2x-v1x)/(v2y-v1y)) - (q1 + q2)
+        world.step(torque_dt)
+
+        if not ((abs(q1_vel[0]) < abs(v1x) - accuracy or abs(q1_vel[1]) < abs(v1y) - accuracy) or (
+                        abs(q2_vel[0]) < abs(v2x) - accuracy or abs(q2_vel[1]) < abs(v2y) - accuracy)):
+            break
+
+    q1_vel = None
+    q2_vel = None
+    world.setCFM(0.0000001)  # Turn joint springiness back down
+
+    def advance_simulation(time_step, torque, ode_world):
+        # Next simulation step
+        for _ in range(0, 10):
+            j2.addTorque(-1 * torque)
+            # bearing friction
+            j2.addTorque(-1 * j2.getAngleRate() * q2_friction)
+            j1.addTorque(-1 * j1.getAngleRate() * q1_friction)
+            ode_world.step(time_step / 10.0)
+
+    # ####################################################
+    # main loop
+    # ####################################################
+
+    while loop_flag:
+        # Process command input
+        if not headless:
+            events = pygame.event.get()
+            for e in events:
+                if e.type == pygame.locals.QUIT:
+                    loop_flag = False
+                if e.type == pygame.K_ESCAPE:
+                    loop_flag = False
+                if e.type == pygame.locals.KEYDOWN:
+                    key = pygame.key.get_pressed()
+                    if key[13]:  # enter key
+                        paused = True
+                    else:
+                        print key
+                if e.type == pygame.locals.KEYUP:
+                    pass
+
+        # pause and allow for terminal input
+        if (paused or not term_input.empty()) and not headless:
+            # set up input box
+            if term_input.empty():
+                command = input_box.ask(screen, 'Message')
+            else:
+                command = term_input.get(block=False, timeout=0)
+            command = command.split(" ")
+            if command[0] == "":
+                if not stepping:
+                    paused = False
+            elif command[0] == "step" or command[0] == "s":
+                if command[1] == "true" or command[1] == "y" or command[1] == "on":
+                    stepping = True
+                    paused = True
+                    print "stepping on"
+                else:
+                    stepping = False
+                    paused = False
+            elif command[0] == "exit":
+                break  # no sense in doing another simulation step
+            elif command[0] == "fps":
+                fps = int(command[1])
+                dt = 1.0 / fps
+            elif command[0] == "gravity":
+                world.setGravity((float(command[1]), 0, 0))
+
+                # ################################################
+                # simulation stuff
+                # ################################################
+
+                # rotate and flip the angles so they agree with how the paper describes them
+
+        def update_measurements():
+            """
+            returns q1, q2, q1_velocity, q2_velocity
+            :return: float, float, float, float
+            """
+            return j1.getAngle() + float(starting_q1), -1 * (
+                j2.getAngle() + -1 * float(starting_q2)), j1.getAngleRate(), -1 * j2.getAngleRate()
+
+        q1, q2, q1_velocity, q2_velocity = update_measurements()
+
+        print_queue.put("angle q1 is = " + str(math.degrees(q1)))
+        print_queue.put("angle q2 is = " + str(math.degrees(q2)))
+        print_queue.put("q1 velocity = " + str(q1_velocity))
+        print_queue.put("q2 velocity = " + str(q2_velocity))
+
+        # #################################################################
+        # Calculations
+        # #################################################################
+
+        j2.addTorque(-1 * constant_torque)
+
+        if passive:
+            advance_simulation(dt, constant_torque, world)
+
+        if not passive:
+            q1, q2, q1_velocity, q2_velocity = update_measurements()
+            print "elapsed time", str(ticks / float(fps))
+            final_torque, path, dists = lookup_table_hopper.get_next_torque(
+                [q1, q2, q1_velocity, q2_velocity], target_state, 3, 8, 1, has_bounds=has_bounds)
+            print "path:", path
+            ode_prediction = lookup_table_generator.run_simulation(q1, q2, q1_velocity, q2_velocity, final_torque,
+                                                                   run_time=1.0 / fps, fps=fps)
+            ode_distance = lookup_table_hopper.dist_between(ode_prediction, target_state, torque=final_torque)
+            print "torque applied: ", final_torque
+
+            advance_simulation(dt, final_torque, world)
+            q1, q2, q1_velocity, q2_velocity = update_measurements()
+
+            actual_distance = lookup_table_hopper.dist_between((q1, q2, q1_velocity, q2_velocity), target_state,
+                                                               torque=final_torque)
+            print "starting distance = ", dists[0]
+            print "predicted ending distance = ", dists[1]
+            print "ODE predicted distance = ", ode_distance, " state:", ode_prediction
+            print "actual ending distance = ", actual_distance
+            if dists[1] < ode_distance:
+                print "ended closer than expected (" + str(
+                    (dists[1] - actual_distance) / actual_distance * 100) + "% off)"
+            elif dists[1] > ode_distance:
+                print "ended further than expected (" + str(
+                    (dists[1] - actual_distance) / actual_distance * 100) + "% off)"
+            if dists[0] < dists[1]:
+                print "can't get closer than current position"
+            print "current position = ", path[0]
+            print
+
+            print_queue.put("final torque   = " + str('{0:.16f}'.format(final_torque)))
+
+        print_queue.put("fps = " + str(fps) + "  ticks/second")
+        print_queue.put("at time " + str(ticks / float(fps)) + "(Seconds)")
+        print_queue.put("holding torque = " + str(lookup_table_hopper.get_holding_torque([q1, q2, 0, 0])))
+        print_queue.put("center of gravity = " + str("%.10f" % lookup_table_hopper.get_center_of_gravity([q1, q2, 0, 0])))
+        # print_queue.put("total energy (hopper) = " + str(lookup_table_hopper._get_potential_energy((q1, q2, q1_velocity, q2_velocity))))
+
+        p1 = body1.getPosition()
+        p2 = body2.getPosition()
+        v1 = body1.getLinearVel()
+        v2 = body2.getLinearVel()
+
+        PE = lower_mass * p1[1] * gravity * -1 + upper_mass * p2[1] * gravity * -1
+        KE = .5 * lower_mass * (v1[0] ** 2 + v1[1] ** 2) + .5 * upper_mass * (v2[0] ** 2 + v2[1] ** 2)
+
+        world.setCFM(0.0000001)
+
+        print_queue.put("total energy (ODE) = " + str(PE + KE))
+
+        # in-window plots
+        if not headless:
+            position_queue.insert(0, (q1, q2))
+            vel_queue.insert(0, (q1_velocity, q2_velocity))
+
+        # ################################################
+        # graphics
+        # ################################################
+
+        if not headless:
+            # Clear the screen
+            screen.fill((255, 255, 255))
+
+            # draw grid
+            for i in range(-3, 5):
+                pygame.draw.line(screen, (0x9F, 0x9F, 0x9F), convert_coord(i, 6), convert_coord(i, -6), 1)
+                pygame.draw.line(screen, (0x9F, 0x9F, 0x9F), convert_coord(6, i), convert_coord(-6, i), 1)
+
+            # get the coordinate of the two bodies
+            x1, y1, z1 = body1.getPosition()  # @UnusedVariable
+            x2, y2, z2 = body2.getPosition()  # @UnusedVariable
+
+            # draw segments first so that they appear under the circles
+            pygame.draw.line(screen, (55, 0, 200), convert_coord(origin.x(), origin.y()), convert_coord(x1, y1), 2)
+            pygame.draw.line(screen, (55, 0, 200), convert_coord(x1, y1), convert_coord(x2, y2), 2)
+
+            # draw the origin
+            pygame.draw.circle(screen, (0, 100, 100), convert_coord(int(origin.x()), int(origin.y())), 10, 0)
+
+            # draw the lower section
+            pygame.draw.circle(screen, (0, 100, 100), convert_coord(x1, y1), 10, 0)
+
+            # draw the upper section
+            pygame.draw.circle(screen, (0, 100, 100), convert_coord(x2, y2), 10, 0)
+
+            # draw graphs
+            plot1_origin = [100, 500]
+            scale = 30
+            n_samples = 200
+            for i in balance_curve_list:
+                cord = (int(plot1_origin[0] + i[0] * scale), int(plot1_origin[1] + i[1] * scale))
+                pygame.draw.circle(screen, (150, 0, 150), cord, 2, 0)
+            for i in range(len(position_queue) - 1, -1, -1):
+                cord = (int(plot1_origin[0] + position_queue[i][0] * scale),
+                        int(plot1_origin[1] + position_queue[i][1] * scale))
+                pygame.draw.circle(screen, (0, 200 - i, 0), cord, 4, 0)
+            if len(position_queue) > n_samples:
+                position_queue.pop()
+            # write debug information
+            reset_screen_print()
+            screen_print("acrobot simulation")
+            while not print_queue.empty():
+                screen_print(print_queue.get())
+
+            # stop if out of time
+            if float(maximum_seconds) * float(fps) < ticks:
+                print "ran out of time, limit was " + str(maximum_seconds) + " seconds, " + str(ticks) + " ticks"
+                loop_flag = False
+
+            # update display
+            pygame.display.flip()
+
+            # Try to keep the specified frame rate
+            # clk.tick(fps)
+
+        # advance simulation counter
+        ticks += 1
+
+        if float(maximum_seconds) * float(fps) < ticks:
+            # print "ran out of time, limit was " + str(maximum_seconds) + "
+            # seconds"
+            loop_flag = False
+
+    if not headless:
+        pygame.display.quit()
+        screen = None
+        font_object = None
+    # put together return values
+    elif return_state_vector:
+        return float(q1), float(q2), float(q1_velocity), float(q2_velocity)
+    else:
+        return -999, -999, -999
+
+
+def get_holding_torque(tupl):
+    """
+    Returns the torque required to counteract gravity on the upper segment.
+    Args:
+        tupl (float, float, float, float): acrobot position (angles)
+    Returns:
+        float: torque required
+    """
+    return lower_mass * l2 * 9.8 * math.cos(tupl[0] + tupl[1])
+
+
+if __name__ == "__main__":
+    run()

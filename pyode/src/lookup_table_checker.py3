@@ -1,0 +1,119 @@
+"""
+Created on Jan 16, 2015
+
+@author: David Smart
+"""
+import math
+import operator
+
+import matplotlib.pyplot as plot
+import time
+
+import lookup_table_hopper as hopper
+import lookup_table_generator as simulation
+
+
+plot_on = True
+
+
+def main():
+    '''
+    docstring
+    '''
+    print("starting")
+
+    max_error = 0.0
+    errors = list()
+    q1_s = list()
+    q2_s = list()
+    for q1 in drange(Q1_LOW, Q1_HIGH, (Q1_HIGH - Q1_LOW) / N_ANGLES):
+        for q2 in drange(Q2_LOW, Q2_HIGH, (Q2_HIGH - Q2_LOW) / N_ANGLES):
+            for q1_vel in drange(
+                    Q1_VEL_LOW, Q1_VEL_HIGH, (Q1_VEL_HIGH - Q1_VEL_LOW) / N_VELOCITIES):
+                for q2_vel in drange(
+                        Q2_VEL_LOW, Q2_VEL_HIGH, (Q2_VEL_HIGH - Q2_VEL_LOW) / N_VELOCITIES):
+                    for t in drange(TORQUE_LOW, TORQUE_HIGH, (TORQUE_HIGH - TORQUE_LOW) / N_VELOCITIES):
+        
+        #                 q1_vel = random.random() * 64.0 - 32.0
+        #                 q2_vel = random.random() * 64.0 - 32.0
+        
+                        hopper_result = hopper.get_next_angles_interpolated(
+                            hopper.get_index_interpolated([q1, q2, q1_vel, q2_vel, t]))
+                        simulation_result = simulation.run_simulation(q1, q2, q1_vel, q2_vel, t)
+                        difference = list(map(
+                            operator.sub,
+                            tuple(hopper_result),
+                            simulation_result))
+                        print("[", end=' ')
+                        hopper.print_tuple(
+                            [q1, q2, q1_vel, q2_vel, t], precision=3)
+                        print("]    [", end=' ')
+                        hopper.print_tuple(difference, precision=3)
+                        print("]    [", end=' ')
+                        hopper.print_tuple(simulation_result, precision=3)
+                        print("]")
+                        error = abs(abs(difference[0]) +
+                                    abs(difference[1]) +
+                                    abs(difference[2]) +
+                                    abs(difference[3]))
+                        if error > 255:
+                            error = 255
+                        if error > max_error:
+                            max_error = error
+                        errors.append(error)
+                        q1_s.append(q1)
+                        q2_s.append(q2)
+
+    print(len(q1_s), len(q2_s), len(errors))
+
+    for error in errors:
+        plot.scatter(q1_s.pop(0), q2_s.pop(0), color=rgb_to_hex(
+            (map_to(error, 0, max_error, 0, 255), 150, 0)), s=90, marker='s')
+    print("[         start position        ]    [          difference          ]    [      simulation result      ] ")
+    print("maximum error:", max_error)
+    plot.show()
+
+
+# Unlike in lookup_table_generator and lookup_table_hopper, these values don't
+# need to match those of the table. It just happens to work well as a format
+# for describing continuity tests (between the table and the ODE simulation).
+# The module should still work if the lower bound is less than the upper bound,
+# but no guarantees are made.
+Q1_LOW = 0 + .4
+Q1_HIGH = math.pi - .4
+Q2_LOW = -1 * math.pi + .4
+Q2_HIGH = math.pi - .4
+Q1_VEL_LOW = 2.0
+Q1_VEL_HIGH = 2.1
+Q2_VEL_LOW = 2.0
+Q2_VEL_HIGH = 2.1
+TORQUE_LOW = 0.0
+TORQUE_HIGH = 0.1
+
+# number of angles, velocities, and torques to test. NOT the same as resolution
+N_ANGLES = 27.0
+N_VELOCITIES = 1.0
+N_TORQUES = 1.0
+
+
+def drange(start, stop, step):
+    r = start
+    while r < stop:
+        yield r
+        r += step
+
+
+def rgb_to_hex(rgb_tuple):
+    """ convert an (R, G, B) tuple to #RRGGBB """
+    hexcolor = '#%02x%02x%02x' % rgb_tuple
+    # that's it! '%02x' means zero-padded, 2-digit hex values
+    return hexcolor
+
+
+def map_to(var, in_min, in_max, out_min, out_max):
+    """Translates a value from one domain to another keeping proportions constant"""
+    return (var - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
+
+if __name__ == '__main__':
+    main()

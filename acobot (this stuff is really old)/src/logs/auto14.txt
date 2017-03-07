@@ -1,0 +1,2 @@
+lower angle, upper angle, time since last measurement2575.01236988,
+-6.39488430698e-15,

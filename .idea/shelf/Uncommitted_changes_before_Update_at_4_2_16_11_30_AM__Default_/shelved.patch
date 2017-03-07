@@ -1,0 +1,54 @@
+Index: pyode/src/lookup_table_hopper.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pyode/src/lookup_table_hopper.py	(revision a2f439ac51b1c0e71e92e2fe381a47593f358f9b)
++++ pyode/src/lookup_table_hopper.py	(revision )
+@@ -475,15 +475,11 @@
+     tupl3 = float(tupl[3])
+     tupl4 = float(tupl[4])
+     # q1a, q1b, q2a, q2b, v1a, v1b, v2a, v2b, ta, tb = 0
+-
+     q1a = math.floor(tupl0)
+-
+     q2a = math.floor(tupl1)
+ 
+     v1a = math.floor(tupl2)
+-
+     v2a = math.floor(tupl3)
+-
+     ta = math.floor(tupl4)
+ 
+     q1a = fixbounds(q1a, 0, table.shape[0] - 1)
+@@ -492,30 +488,13 @@
+     v2a = fixbounds(v2a, 0, table.shape[3] - 1)
+     ta = fixbounds(ta, 0, table.shape[4] - 1)
+ 
+-    # print "q1", q1a, q1b
+-    # print "q2", q2a, q2b
+-    # print "v1", v1a, v1b
+-    # print "v2", v2a, v2b
+-    # print "t ", ta, tb
+-
+     q1b = q1a + 1
+     q2b = q2a + 1
+     v1b = v1a + 1
+     v2b = v2a + 1
+     tb = ta + 1
+ 
+-    # print "q1", q1a, q1b
+-    # print "q2", q2a, q2b
+-    # print "v1", v1a, v1b
+-    # print "v2", v2a, v2b
+-    # print "t ", ta, tb
+-    #
+-    # print "\n\n"
+-
+-
+     # take a cube out of the larger table surrounding the point in question
+-    # a, b, c, d, e, f, count, digit = 0.0
+-    # tmpa, tmpb, tmpc, tmpd, tmpf, tmp, temp, result = 0.0
+     i, q1, q2, v1, v2, t, t1, t2, flip_temp = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+ 
+     mini = numpy.zeros([2, 2, 2, 2, 2, 4], dtype=numpy.float32)

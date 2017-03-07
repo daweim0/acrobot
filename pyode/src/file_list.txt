@@ -1,0 +1,203 @@
+3dGrapher.py
+acrobot_math.py
+acrobot_math.pyc
+acrobot_state.py
+auto5.csv
+backup110_[0.9, 2.241592653589793, -0.8, 0.8, -4.0, 4.0, -7.0, 7.0, -105, 105, 0.1, 0.1, 10.0, 10, 0, 0].npy
+balance_curve.csv
+build
+build_cython.sh
+child_child simulations 3 frictioa = -10.pngauto1.csv.png
+child_child simulations 3 frictiob = -9.pngauto1.csv.png
+child_child simulations 3 frictioc = -8.pngauto1.csv.png
+child_child simulations 3 frictiod = -7.pngauto1.csv.png
+child_child simulations 3 frictioe = -6.pngauto1.csv.png
+child_child simulations 3 frictiof = -5.pngauto1.csv.png
+child_child simulations 3 frictiog = -4.pngauto1.csv.png
+child_child simulations 3 frictioh = -3.pngauto1.csv.png
+child_child simulations 3 frictioi = -2.pngauto1.csv.png
+child_child simulations 3 frictiok = -1.pngauto1.csv.png
+child_child simulations 3 friction = 0.pngauto1.csv.png
+child_child simulations 3 friction = 1.pngauto1.csv.png
+child_child simulations 3 friction = 2.pngauto1.csv.png
+child_child simulations 3 friction = 3.pngauto1.csv.png
+child_child simulations 3 friction = 4.pngauto1.csv.png
+child_child simulations 3 friction = 5.pngauto1.csv.png
+child_child simulations 3 friction = 6.pngauto1.csv.png
+child_child simulations 3 friction = 7.pngauto1.csv.png
+child_child simulations 3 friction = 8.pngauto1.csv.png
+child_child simulations 3 friction = 9.pngauto1.csv.png
+child simulations broken(graphing bug)
+child simulations v2
+circular_motion
+convolve1.c
+convolve1.html
+convolve1.pyx
+convolve1.pyx~
+convolve1.so
+convolve_profiler.py
+convolve_py.py
+convolve_py.pyc
+cython_test.c
+cython_test.pyx
+cython_test.so
+dampening.py
+dampening.pyc
+data_dump.p
+debug log 1.txt
+dump1.txt
+file_list.txt
+file_shrinker.py
+hardware_listener.py
+hardware_lookup_table_generator.py
+hardware_lookup_table_generator.pyc
+hardware.py
+hardware.pyc
+hardware_simulation.py
+hopper2.py
+hopper2.pyc
+input_box.py
+input_box.pyc
+interpolation_consistancy_checker.py
+log1.txt
+log3.txt
+log4.txt
+logger.py
+logger.pyc
+logging_test
+log_ode.txt
+log_recorder.txt
+log_recorder.txt~
+log_recorder.txt.old
+lookup_table_checker.py
+lookup_table_checker.py3
+lookup_table_checker.py3.bak
+lookup_table_generator_interpolated.py
+lookup_table_generator.py
+lookup_table_generator.pyc
+lookup_table_hopper_helper.c
+lookup_table_hopper_helper.cpython-35m-x86_64-linux-gnu.so
+lookup_table_hopper_helper.html
+lookup_table_hopper_helper.pyx
+lookup_table_hopper_helper.so
+lookup_table_hopper.py
+lookup_table_hopper.pyc
+math_helper.py
+multi_grapher.py
+multi_multi_grapher.py
+ode_interface.py
+ode_interface.pyc
+ompc_lib
+parameter_optimizer.py
+parent_log_balance_curve.csv
+parent_log_balance_curve_left.csv
+parent_log_balance_curve_right.csv
+parent-log.csv
+parent_log_trimmed.csv
+parser.out
+parsetab.py
+pid.py
+pid.pyc
+playground.py
+playground.pyc
+playground_table_checker.py
+plottest.py
+__pycache__
+setup_convolve.py
+setup_convolve.py~
+setup.py
+setup_test.py
+simulation.py
+simulation.py~
+simulation.pyc
+start_parallel.bat
+stop
+stop.py
+table1
+table100_[1.3707963267948966, 1.7707963267948965, -0.2, 0.2, -0.2, 0.2, -0.2, 0.2, -1, 1, 0.05, 0.05, 0.2, 15, 0, 0].npy
+table101_[1.3707963267948966, 1.7707963267948965, -0.2, 0.2, -0.2, 0.2, -0.2, 0.2, -1, 1, 0.05, 0.05, 0.2, 15, 0, 0].npy
+table102_[3.541592653589793, 5.883185307179586, -2.741592653589793, 2.741592653589793, -4.0, 4.0, -7.0, 7.0, -3, 3, 0.2, 0.2, 1.0, 10, 0, 0].npy
+table103_[3.541592653589793, 5.883185307179586, -2.741592653589793, 2.741592653589793, -4.0, 4.0, -7.0, 7.0, -3, 3, 0.2, 0.2, 1.0, 10, 0, 0].npy
+table104_[3.541592653589793, 5.883185307179586, -2.741592653589793, 2.741592653589793, -4.0, 4.0, -7.0, 7.0, -3, 3, 0.2, 0.2, 1.0, 10, 0, 0].npy
+table105_[3.541592653589793, 5.883185307179586, -2.741592653589793, 2.741592653589793, -4.0, 4.0, -7.0, 7.0, -3, 3, 0.2, 0.2, 1.0, 10, 0, 0].npy
+table106_[3.541592653589793, 5.883185307179586, -2.741592653589793, 2.741592653589793, -4.0, 4.0, -7.0, 7.0, -3, 3, 0.2, 0.2, 1.0, 10, 0, 0].npy
+table107_[0.4, 2.741592653589793, -0.8, 0.8, -4.0, 4.0, -7.0, 7.0, -70, 70, 0.2, 0.2, 10.0, 10, 0, 0].npy
+table108_[0.4, 2.741592653589793, -0.8, 0.8, -4.0, 4.0, -7.0, 7.0, -70, 70, 0.2, 0.2, 10.0, 10, 0, 0].npy
+table109_[0.4, 2.741592653589793, -0.8, 0.8, -4.0, 4.0, -7.0, 7.0, -70, 70, 0.2, 0.2, 10.0, 10, 0, 0].npy
+table10.npy
+table110_[1.2217304763960306, 1.8325957145940461, -0.5235987755982988, 0.5235987755982988, -2.0, 2.0, -4.0, 4.0, -50, 50, 0.1, 0.25, 5.0, 10, 0, 0].npy
+table111_[3.541592653589793, 5.883185307179586, -1.4, 1.4, -4.0, 4.0, -7.0, 7.0, -2, 2, 0.4, 0.4, 0.5, 10, 0, 0].npy
+table112_[1.2217304763960306, 1.8325957145940461, -0.5235987755982988, 0.5235987755982988, -2.0, 2.0, -4.0, 4.0, -50, 50, 0.05, 0.1, 10.0, 10, 0, 0].npy
+table113_[1.2217304763960306, 1.8325957145940461, -0.5235987755982988, 0.5235987755982988, -2.0, 2.0, -4.0, 4.0, -50, 50, 0.1, 0.25, 2.5, 10, 0, 0].npy
+table114_[1.2, 1.8, -0.5, 0.5, -0.8, 0.8, -1.25, 1.25, -1, 1, 0.025, 0.025, 0.25, 10, 0, 0].npy
+table115_[1.45, 1.65, -0.2, 0.2, -0.8, 0.8, -1.25, 1.25, -1, 1, 0.01, 0.025, 0.25, 10, 0, 0].npy
+table116_[1.45, 1.65, -0.2, 0.2, -0.8, 0.8, -1.25, 1.25, -1, 1, 0.01, 0.025, 0.25, 10, 0, 0].npy
+table117_[0.8726646259971648, 2.0943951023931953, -0.8726646259971648, 0.8726646259971648, -2.0, 2.0, -4.0, 4.0, -100, 100, 0.1, 0.2, 10, 10, 0, 0].npy
+table11.npy
+table1.npy
+table200_[0.8726646259971648, 2.0943951023931953, -0.8726646259971648, 0.8726646259971648, -2.0, 2.0, -4.0, 4.0, -80, 80, 0.15, 0.25, 20, 10, 0, 0].npy
+table27_[0, 6.283185307179586, -3.141592653589793, 3.141592653589793, -2.0, 2.0, -4.0, 4.0, -40, 40, 0.2, 0.2, 2].npy
+table28_[0, 6.2831853071795862, -3.1415926535897931, 3.1415926535897931, -1.5, 1.5, -4.0, 4.0, -60, 60, 0.29999999999999999, 0.29999999999999999, 4].npy
+table2.npy
+table2.npz
+table300_[0, 6.283185307179586, -3.141592653589793, 3.141592653589793, -2.0, 2.0, -3.0, 3.0, -1.0, 1.0, 0.1, 0.1, 0.5, 10, 0, 0].npy
+table34_[0, 6.2831853071795862, -3.1415926535897931, 3.1415926535897931, -1.5, 1.5, -3.0, 3.0, -40, 40, 0.29999999999999999, 0.29999999999999999, 5].npy
+table35_[0, 6.2831853071795862, -3.1415926535897931, 3.1415926535897931, -1.5, 1.5, -4.0, 4.0, -40, 40, 0.20000000000000001, 0.20000000000000001, 4].npy
+table36_[0, 6.2831853071795862, -3.1415926535897931, 3.1415926535897931, -1.5, 1.5, -4.0, 4.0, -10, 10, 0.14999999999999999, 0.20000000000000001, 1, 15].npy
+table39_[1.0707963267948966, 2.0707963267948966, -1, 1, -1.0, 1.0, -2.0, 2.0, -5, 5, 0.1, 0.1, 1, 10, 0, 0].npy
+table3.npy
+table40_[0.8207963267948966, 2.1407963267948964, -1, 1, -1.0, 1.0, -2.0, 2.0, -5, 5, 0.1, 0.1, 1, 15, 0, 0].npy
+table42_[-0.42920367320510344, 3.5707963267948966, -2, 2, -2.0, 2.0, -5.0, 5.0, -10, 10, 0.2, 0.2, 1.0, 15, 0, 0].npy
+table43_[-0.42920367320510344, 3.5707963267948966, -2, 2, -2.0, 2.0, -5.0, 5.0, -10, 10, 0.2, 0.2, 1.0, 15, 0.25, 1.0].npy
+table4.npy
+table5(mini).npy
+table6(big).npy
+table7(torque).npy
+table8(fixed).npy
+table9(fine_torque).npy
+table_history.p
+table_test.npy
+term_test.py
+term_thread.py
+term_thread.pyc
+test1.py
+test2.py
+thread0
+thread1
+thread-1
+thread10
+thread-10
+thread11
+thread-11
+thread12
+thread-12
+thread13
+thread-13
+thread14
+thread-14
+thread15
+thread-15
+thread16
+thread17
+thread18
+thread19
+thread2
+thread-2
+thread20
+thread3
+thread-3
+thread4
+thread-4
+thread5
+thread-5
+thread6
+thread-6
+thread7
+thread-7
+thread8
+thread-8
+thread9
+thread-9
+vertical.csv
+visual_hopper.py
+visual_hopper.pyc

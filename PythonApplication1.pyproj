@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2b35feaa-efa4-4315-a3b3-59063371d452}</ProjectGuid>
+    <ProjectHome>pyode\src\</ProjectHome>
+    <StartupFile>3dGrapher.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Standard Python launcher</LaunchProvider>
+    <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
+    <InterpreterVersion>2.6</InterpreterVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="circular_motion\space_takeup.txt" />
+    <Content Include="debug log 1.txt" />
+    <Content Include="ompc_lib\.hg_archival.txt" />
+    <Content Include="ompc_lib\examples\appengine\media\css\base.css" />
+    <Content Include="ompc_lib\examples\appengine\media\favicon.ico" />
+    <Content Include="ompc_lib\examples\appengine\templates\base.html" />
+    <Content Include="ompc_lib\examples\appengine\templates\m2py.html" />
+    <Content Include="ompc_lib\ompclib\basic_funcs.txt" />
+    <Content Include="ompc_lib\ompclib\functions.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\ANNOUNCE.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\CREDITS.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\FAQ.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\LICENSE.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\NEWS.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\README.txt" />
+    <Content Include="ompc_lib\ompclib\gplot\TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="3dGrapher.py" />
+    <Compile Include="acrobot_math.py" />
+    <Compile Include="dampening.py" />
+    <Compile Include="file_shrinker.py" />
+    <Compile Include="input_box.py" />
+    <Compile Include="logger.py" />
+    <Compile Include="lookup_table_checker.py" />
+    <Compile Include="lookup_table_generator.py" />
+    <Compile Include="lookup_table_hopper.py" />
+    <Compile Include="math_helper.py" />
+    <Compile Include="multi_grapher.py" />
+    <Compile Include="multi_multi_grapher.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\colorpy.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\functions.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\lex.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\m2py.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\ompcply.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\parsetab.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\yacc.py" />
+    <Compile Include="ompc_lib\examples\appengine\src\__init__.py" />
+    <Compile Include="ompc_lib\examples\arguments.py" />
+    <Compile Include="ompc_lib\examples\byteplay.py" />
+    <Compile Include="ompc_lib\examples\doc_comments.py" />
+    <Compile Include="ompc_lib\examples\elementwise_operations.py" />
+    <Compile Include="ompc_lib\examples\growing_array.py" />
+    <Compile Include="ompc_lib\examples\introduction.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\izhikevich.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\ndi_test_fast.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\ompclib_demo.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\ompclib_numpy.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\ompc_fast.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\ompc_numpy.py" />
+    <Compile Include="ompc_lib\examples\izhikevich\ompc_pure.py" />
+    <Compile Include="ompc_lib\examples\mex\mex.py" />
+    <Compile Include="ompc_lib\examples\mex\__init__.py" />
+    <Compile Include="ompc_lib\examples\m_compile.py" />
+    <Compile Include="ompc_lib\examples\ompc\lex.py" />
+    <Compile Include="ompc_lib\examples\ompc\m_compile.py" />
+    <Compile Include="ompc_lib\examples\ompc\ompcply.py" />
+    <Compile Include="ompc_lib\examples\ompc\yacc.py" />
+    <Compile Include="ompc_lib\examples\ompc\__init__.py" />
+    <Compile Include="ompc_lib\examples\ompc_ihooks.py" />
+    <Compile Include="ompc_lib\examples\ompc_mfunction_poormans.py" />
+    <Compile Include="ompc_lib\examples\ompc_narginout.py" />
+    <Compile Include="ompc_lib\examples\translate.py" />
+    <Compile Include="ompc_lib\ompceg\ompceg.py" />
+    <Compile Include="ompc_lib\ompclib\byteplay.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\demo.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\Errors.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\funcutils.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gnuplot_Suites.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp_cygwin.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp_java.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp_mac.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp_macosx.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp_unix.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\gp_win32.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\PlotItems.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\setup.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\termdefs.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\test.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\utils.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\_Gnuplot.py" />
+    <Compile Include="ompc_lib\ompclib\gplot\__init__.py" />
+    <Compile Include="ompc_lib\ompclib\matpy.py" />
+    <Compile Include="ompc_lib\ompclib\matpy_gnuplot.py" />
+    <Compile Include="ompc_lib\ompclib\matpy_platform.py" />
+    <Compile Include="ompc_lib\ompclib\m_compile.py" />
+    <Compile Include="ompc_lib\ompclib\ompclib_numpy.py" />
+    <Compile Include="ompc_lib\ompclib\ompclib_numpy_base.py" />
+    <Compile Include="ompc_lib\ompclib\ompclib_platform.py" />
+    <Compile Include="ompc_lib\ompclib\ompc_narginout.py" />
+    <Compile Include="ompc_lib\ompclib\ompc_supported.py" />
+    <Compile Include="ompc_lib\ompclib\__init__.py" />
+    <Compile Include="ompc_lib\ompc\byteplay.py" />
+    <Compile Include="ompc_lib\ompc\lex.py" />
+    <Compile Include="ompc_lib\ompc\m_compile.py" />
+    <Compile Include="ompc_lib\ompc\ompcply.py" />
+    <Compile Include="ompc_lib\ompc\yacc.py" />
+    <Compile Include="ompc_lib\ompc\__init__.py" />
+    <Compile Include="ompc_lib\parsetab.py" />
+    <Compile Include="ompc_lib\sandbox\demo_interactive.py" />
+    <Compile Include="ompc_lib\sandbox\install.py" />
+    <Compile Include="ompc_lib\sandbox\test_import.py" />
+    <Compile Include="ompc_lib\sandbox\test_return.py" />
+    <Compile Include="ompc_lib\setup.py" />
+    <Compile Include="ompc_lib\test.py" />
+    <Compile Include="ompc_lib\__init__.py" />
+    <Compile Include="parsetab.py" />
+    <Compile Include="pid.py" />
+    <Compile Include="playground.py" />
+    <Compile Include="plottest.py" />
+    <Compile Include="simulation.py" />
+    <Compile Include="term_test.py" />
+    <Compile Include="term_thread.py" />
+    <Compile Include="test1.py" />
+    <Compile Include="test2.py" />
+    <Compile Include="visual_hopper.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="circular_motion" />
+    <Folder Include="ompc_lib" />
+    <Folder Include="ompc_lib\examples" />
+    <Folder Include="ompc_lib\examples\appengine\" />
+    <Folder Include="ompc_lib\examples\appengine\media" />
+    <Folder Include="ompc_lib\examples\appengine\media\css" />
+    <Folder Include="ompc_lib\examples\appengine\src" />
+    <Folder Include="ompc_lib\examples\appengine\templates" />
+    <Folder Include="ompc_lib\examples\izhikevich" />
+    <Folder Include="ompc_lib\examples\mex" />
+    <Folder Include="ompc_lib\examples\ompc" />
+    <Folder Include="ompc_lib\ompc" />
+    <Folder Include="ompc_lib\ompceg" />
+    <Folder Include="ompc_lib\ompclib" />
+    <Folder Include="ompc_lib\ompclib\gplot" />
+    <Folder Include="ompc_lib\sandbox" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="{2af0f10d-7135-4994-9156-5d01c9c11b7e}\2.6" />
+  </ItemGroup>
+  <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
+</Project>

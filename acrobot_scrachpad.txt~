@@ -1,0 +1,150 @@
+# #################################################################
+# Calculations
+# #################################################################
+
+last_time = current_time
+current_time = time.time()
+
+# if passive is true then don't apply constant_torque and nothing else
+if passive and ticks != 0:
+    q1, q2, q1_velocity, q2_velocity, id_number, step_time, applied_torque = advance_simulation(constant_torque, robot)
+    print(str(q1) + ",", str(q2) + ",", str(q1_velocity) + ",", str(q2_velocity))
+
+# not passive
+elif ticks != 0:
+    final_torque = hardware_lookup_table_generator.get_torque([q1, q2, q1_velocity, q2_velocity])
+    if final_torque is None:
+        future_position = lookup_table_hopper.get_next_angles_interpolated(
+            [q1, q2, q1_velocity, q2_velocity, last_applied_torque])
+        if lookup_table_hopper.is_within_bounds(future_position):
+            final_torque = hardware_lookup_table_generator.get_torque([future_position])
+
+    # the lookup table does not need to be filled in here
+    if final_torque is None:
+        filling_lookup_table = False
+        set_led_bluegreen = False
+        try:
+            future_position = lookup_table_hopper.get_next_angles_interpolated(
+                lookup_table_hopper.get_index_interpolated(
+                    [q1, q2, q1_velocity, q2_velocity, last_applied_torque]))
+            final_torque, path, dists = lookup_table_hopper.get_next_torque(
+                future_position, target_state, *lookup_parameters, has_bounds=has_bounds)
+        except Exception as e:
+            # print e
+            final_torque = 0
+            path = [[999, 999, 999, 999, 999], [999, 999, 999, 999]]
+            dists = [999, 999]
+
+        # If systematic_torque is true then prediction_distance does not give accurate data because it thinks
+        # it applied the torque the lookup table returned.
+        if dists[0] == 999 or dists[0] == 9999.0 or systematic_torques:
+            pass
+            final_torque = math.sin(time.time()) * hardware_lookup_table_generator.torque_high
+        if -30 * math.pi / 180.0 > q2:
+            final_torque = 0
+            if abs(q2_velocity) < 0.2:
+                final_torque = 30
+        elif q2 > 30 * math.pi / 180:
+            final_torque = 0
+            if abs(q2_velocity) < 0.2:
+                final_torque = -30
+
+        last_applied_torque = final_torque
+        q1, q2, q1_velocity, q2_velocity, id_number, step_time, applied_torque = advance_simulation(final_torque, robot)
+        # hardware_lookup_table_generator.feed_data([q1, q2, q1_velocity, q2_velocity], final_torque, step_time, id_num=id_number)
+
+        if not systematic_torques:
+            actual_distance = lookup_table_hopper.dist_between((q1, q2, q1_velocity, q2_velocity), target_state,
+                                                               torque=final_torque)
+            prediction_distance = lookup_table_hopper.dist_between((q1, q2, q1_velocity, q2_velocity),
+                                                                   path[1][0:4],
+                                                                   torque=final_torque, weight_set=1)
+            if dists[1] < 990:
+                try:
+                    error_percentage = prediction_distance
+                except ZeroDivisionError:
+                    error_percentage = 1.0
+                if error_percentage > 1.0 or math.isnan(error_percentage):
+                    error_percentage = 1.01
+                error_total += error_percentage
+                n_errors += 1
+                torque_queue.append([final_torque, prediction_distance])
+            else:
+                torque_queue.append([final_torque, "absent"])
+        else:
+            torque_queue.append([final_torque, "absent"])
+        position_queue.insert(0, (q1, q2, q1_velocity, q2_velocity, prediction_distance))
+
+    # the lookup table does need to be filled in
+    else:
+        filling_lookup_table = True
+        set_led_bluegreen = True
+        print("applying torque to fill lookup table " + str(final_torque))
+        # call(["wall", "applying torque to fill lookup table " + str(final_torque)])
+        path = [[0, 0, 0, 0, 0], [0, 0, 0, 0]]
+        dists = [0, 0]
+        q1, q2, q1_velocity, q2_velocity, id_number, step_time, applied_torque = advance_simulation(final_torque, robot)
+        hardware_lookup_table_generator.feed_data([q1, q2, q1_velocity, q2_velocity], final_torque, step_time, id_num=id_number)
+        actual_distance = lookup_table_hopper.dist_between((q1, q2, q1_velocity, q2_velocity), target_state, torque=final_torque)
+        torque_queue.append([final_torque, None])
+        position_queue.insert(0, (q1, q2, q1_velocity, q2_velocity, "absent"))
+
+    if set_led_bluegreen:
+        robot.set_led(0x03)
+    else:
+        robot.set_led(0x01)
+
+    # only print out debugging info if it isn't headless
+    if not headless:
+        pass
+        print("starting position = ", path[0])
+        print("starting distance = ", dists[0])
+        if not filling_lookup_table:
+            print("predicted ending distance = ", dists[1])
+            print("predicted ending position = [", end=' ')
+            lookup_table_hopper.print_tupple(path[1], new_line=False)
+            print("]")
+            # print "ODE predicted distance = ", ode_distance, " state:", ode_prediction
+            print("ending distance = ", actual_distance)
+            try:
+                print("prediction error = ", prediction_distance)
+            except UnboundLocalError:
+                pass
+            print("average prediction error = ", error_total / n_errors)
+
+        print("current position = ", q1, q2, q1_velocity, q2_velocity)
+        print("torque taken:", final_torque)
+        print()
+
+q1, q2, q1_velocity, q2_velocity = update_measurements()
+position_list.append((q1, q2, q1_velocity, q2_velocity))
+
+if not headless and ticks != 0:
+    print_queue.put("angle q1 is = " + str(math.degrees(q1)) + " (" + str(q1) + ")")
+    print_queue.put("angle q2 is = " + str(math.degrees(q2)) + " (" + str(q2) + ")")
+    print_queue.put("q1 velocity = " + str(q1_velocity))
+    print_queue.put("q2 velocity = " + str(q2_velocity))
+    if not passive:
+        print_queue.put("final balancing torque   = " + str('{0:.16f}'.format(final_torque)))
+    else:
+        print_queue.put("constant torque   = " + str('{0:.16f}'.format(constant_torque)))
+
+    fps_average = fps_average * .75 + 0.25 / (current_time - last_time)
+    print_queue.put("fps = " + str(fps_average))
+    print_queue.put("at time " + str(current_time - start_time) + " (Seconds)")
+    print_queue.put("average error = " + str(float(error_total) / n_errors))
+    # print_queue.put("holding torque = " + str(lookup_table_hopper.get_holding_torque([q1, q2, 0, 0])))
+    # print_queue.put(
+    #     "center of gravity = " + str("%.10f" % lookup_table_hopper.get_center_of_gravity([q1, q2, 0, 0])))
+    # print_queue.put(
+    #     "angular momentum = " + str(
+    #         lookup_table_hopper.get_angular_momentum((q1, q2, q1_velocity, q2_velocity))))
+    # print_queue.put("energy difference = " + str(lookup_table_hopper.get_mechanical_energy(
+    #     (q1, q2, q1_velocity, q2_velocity)) - lookup_table_hopper.get_mechanical_energy(target_state)))
+    print_queue.put(
+        "distance = " + str(lookup_table_hopper.dist_between((q1, q2, q1_velocity, q2_velocity), target_state)))
+
+position_output_queue.append((q1, q2, q1_velocity, q2_velocity))
+
+if interactive:
+    constant_torque = new_constant_torque

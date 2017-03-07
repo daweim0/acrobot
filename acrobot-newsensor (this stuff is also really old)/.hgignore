@@ -1,0 +1,10 @@
+syntax: glob
+*.s
+128_backup/*.raw
+*.pyc
+*.hex
+*.out
+*~
+supplementary/*
+parts/*
+

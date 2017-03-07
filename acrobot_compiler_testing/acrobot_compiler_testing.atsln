@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "acrobot_compiler_testing", "acrobot_compiler_testing\acrobot_compiler_testing.cproj", "{C370780F-98C4-41B6-8530-D24D486A119A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C370780F-98C4-41B6-8530-D24D486A119A}.Debug|AVR.ActiveCfg = Debug|AVR
+		{C370780F-98C4-41B6-8530-D24D486A119A}.Debug|AVR.Build.0 = Debug|AVR
+		{C370780F-98C4-41B6-8530-D24D486A119A}.Release|AVR.ActiveCfg = Release|AVR
+		{C370780F-98C4-41B6-8530-D24D486A119A}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

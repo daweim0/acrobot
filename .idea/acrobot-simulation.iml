@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="PYTHON_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/pyode/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/build" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/child simulations broken(graphing bug)" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/child simulations v2" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/circular_motion" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/logging_test" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/ompc_lib" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-1" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-10" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-11" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-12" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-13" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-14" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-15" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-2" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-3" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-4" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-5" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-6" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-7" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-8" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread-9" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread0" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread1" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread10" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread11" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread12" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread13" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread14" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread15" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread16" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread17" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread18" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread19" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread2" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread20" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread3" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread4" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread5" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread6" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread7" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread8" />
+      <excludeFolder url="file://$MODULE_DIR$/pyode/src/thread9" />
+    </content>
+    <orderEntry type="jdk" jdkName="Python 3.5.1+ (/usr/bin/python3.5)" jdkType="Python SDK" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

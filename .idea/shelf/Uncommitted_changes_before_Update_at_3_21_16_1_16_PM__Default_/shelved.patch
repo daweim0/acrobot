@@ -1,0 +1,119 @@
+Index: pyode/src/lookup_table_hopper.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pyode/src/lookup_table_hopper.py	(revision 4ed0041bddbca46cfcb80e040a87a16337443913)
++++ pyode/src/lookup_table_hopper.py	(revision )
+@@ -468,15 +468,10 @@
+     tupl3 = float(tupl[3])
+     tupl4 = float(tupl[4])
+     # q1a, q1b, q2a, q2b, v1a, v1b, v2a, v2b, ta, tb = 0
+-
+     q1a = math.floor(tupl0)
+-
+     q2a = math.floor(tupl1)
+-
+-    v1a =  math.floor(tupl2)
++    v1a = math.floor(tupl2)
+-
+     v2a = math.floor(tupl3)
+-
+     ta = math.floor(tupl4)
+ 
+     q1a = fixbounds(q1a, 0, table.shape[0]-1)
+@@ -485,30 +480,13 @@
+     v2a = fixbounds(v2a, 0, table.shape[3]-1)
+     ta = fixbounds(ta, 0, table.shape[4]-1)
+ 
+-    # print "q1", q1a, q1b
+-    # print "q2", q2a, q2b
+-    # print "v1", v1a, v1b
+-    # print "v2", v2a, v2b
+-    # print "t ", ta, tb
+-
+     q1b = q1a + 1
+     q2b = q2a + 1
+     v1b = v1a + 1
+     v2b = v2a + 1
+     tb = ta + 1
+ 
+-    # print "q1", q1a, q1b
+-    # print "q2", q2a, q2b
+-    # print "v1", v1a, v1b
+-    # print "v2", v2a, v2b
+-    # print "t ", ta, tb
+-    #
+-    # print "\n\n"
+-
+-
+     # take a cube out of the larger table surrounding the point in question
+-    # a, b, c, d, e, f, count, digit = 0.0
+-    # tmpa, tmpb, tmpc, tmpd, tmpf, tmp, temp, result = 0.0
+     i, q1, q2, v1, v2, t, t1, t2, flip_temp = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
+ 
+     mini = numpy.zeros([2, 2, 2, 2, 2, 4], dtype=numpy.float32)
+Index: pyode/src/lookup_table_hopper_helper.pyx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pyode/src/lookup_table_hopper_helper.pyx	(revision 4ed0041bddbca46cfcb80e040a87a16337443913)
++++ pyode/src/lookup_table_hopper_helper.pyx	(revision )
+@@ -104,7 +104,7 @@
+                                                             <float> table[q1a+q1+adjust[0], q2a+q2+adjust[1], v1a+v1+adjust[2], v2a+v2+adjust[3], ta+1+adjust[4], i])
+ 
+                         if mini[q1][q2][v1][v2][0][i] > 100.0:
+-                            print "!!!!!!"
++                            print "*****"
+                             print mini[q1][q2][v1][v2][0][i]
+                             print q1a+q1, q2a+q2, v1a+v1, v2a+v2, ta, i
+ 
+@@ -119,7 +119,7 @@
+                     else:
+                         mini[q1][q2][v1][0][0][i] = map_to(tupl3, v2a, v2b, mini[q1][q2][v1][0][0][i], mini[q1][q2][v1][1][0][i])
+                     if mini[q1][q2][v1][0][0][i] > 100.0:
+-                        print "!!!!!!"
++                        print "*****"
+                         print mini[q1][q2][v1][v2][0][i]
+                         print q1a+q1, q2a+q2, v1a+v1, v2a+v2, ta, i
+ 
+@@ -134,7 +134,7 @@
+                 else:
+                     mini[q1][q2][0][0][0][i] = map_to(tupl2, v1a, v1b, mini[q1][q2][0][0][0][i], mini[q1][q2][1][0][0][i])
+                 if mini[q1][q2][0][0][0][i] > 100.0:
+-                    print "!!!!!!"
++                    print "*****"
+                     print mini[q1][q2][v1][v2][0][i]
+                     print q1a+q1, q2a+q2, v1a+v1, v2a+v2, ta, i
+ 
+@@ -147,7 +147,7 @@
+             else:
+                 mini[q1][0][0][0][0][i] = map_to(tupl1, q2a, q2b, mini[q1][0][0][0][0][i], mini[q1][1][0][0][0][i])
+             if mini[q1][0][0][0][0][i] > 100.0:
+-                print "!!!!!!"
++                print "*****"
+                 print mini[q1][q2][v1][v2][0][i]
+                 print q1a+q1, q2a+q2, v1a+v1, v2a+v2, ta, i
+ 
+@@ -161,18 +161,16 @@
+             result = map_to(tupl0, q1a, q1b, mini[0][0][0][0][0][i], mini[1][0][0][0][0][i])
+ 
+         if len(output) > 0 and output[len(output) - 1] > 10.0:
+-            print "!!!!!!"
++            print "*****"
+             print mini[q1][q2][v1][v2][0][i]
+             print q1a+q1, q2a+q2, v1a+v1, v2a+v2, ta, i
+ 
+         if -0.000001 < result < 0.000001:
+             # print "not enough data to do interpolation (all zeros)"
+             # print adjust[0], adjust[1], adjust[2], adjust[3], adjust[4]
+-            return [0.0999, 0.9099, 0.9909 ,0.9990]
++            return [0.0999, 0.9099, 0.9909 ,-999.9990]
+         else:
+             output.append(result)
+-
+-    print "!!!!", output
+     return output
+ 
+ 
